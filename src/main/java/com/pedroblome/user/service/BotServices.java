@@ -7,15 +7,14 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-import com.nimbusds.oauth2.sdk.Response;
+import javax.validation.Valid;
+
 import com.pedroblome.user.controller.dto.BotDto;
 import com.pedroblome.user.controller.dto.OrderCreateDto;
 import com.pedroblome.user.controller.dto.StockCompleteDto;
-import com.pedroblome.user.model.User;
-import com.pedroblome.user.model.User_stock_balance;
+import com.pedroblome.user.repository.UserOrderRepository;
 import com.pedroblome.user.repository.UserRepository;
-import com.pedroblome.user.repository.User_orderRepository;
-import com.pedroblome.user.repository.User_stock_balanceRepository;
+import com.pedroblome.user.repository.UserStockBalanceRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -29,10 +28,10 @@ import org.springframework.web.client.RestTemplate;
 public class BotServices {
 
     @Autowired
-    User_orderRepository user_orderRepository;
+    UserOrderRepository userOrderRepository;
 
     @Autowired
-    User_stock_balanceRepository user_stock_balanceRepository;
+    UserStockBalanceRepository userStockBalanceRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -42,24 +41,22 @@ public class BotServices {
         while (userRepository.sevenOrMoreOrdersBot() <= 10) {
 
             try {
-                String name = "bot" + String.valueOf(random.nextInt(100, 300));
-                String email = "bot" + String.valueOf(random.nextInt(100, 300)) + "@email.com";
-                String password = "passwordbot" + String.valueOf(random.nextInt(100, 300));
-                BigDecimal dollar_balance = BigDecimal.valueOf(0);
+                String name = "bot" + (random.nextInt(100, 300));
+                String email = "bot" + (random.nextInt(100, 300)) + "@email.com";
+                String password = "passwordbot" + (random.nextInt(100, 300));
+                BigDecimal dollarBalance = BigDecimal.valueOf(0);
                 Boolean bot = true;
-                BotDto botDto = new BotDto(name, email, password, dollar_balance, bot);
+                BotDto botDto = new BotDto(name, email, password, dollarBalance, bot);
 
                 RestTemplate restTemplate = new RestTemplate();
                 URI uri;
-                uri = new URI("http://localhost:8088/users/");
+                uri = new URI("http://localhost:8088/user");
                 HttpHeaders headers = new HttpHeaders();
                 headers.set("Authorization", token);
                 headers.set("Content-Type", "application/json");
 
-                // (instancia,cabecalho)
                 HttpEntity requestEntity = new HttpEntity(botDto, headers);
 
-                // HttpMethod.PUT , HttpMethod.POST , HttpMethod.GET
                 ResponseEntity<BotDto> response = restTemplate.exchange(
                         uri,
                         HttpMethod.POST,
@@ -71,99 +68,90 @@ public class BotServices {
             }
 
         }
-        for (long id_stock = 1; id_stock <= 726; id_stock++) {
-            // puxando as informações de cada
+
+        for (long idStock = 1; idStock <= 720; idStock++) {
 
             try {
 
                 RestTemplate restTemplateStock = new RestTemplate();
                 URI uriStock;
-                uriStock = new URI("http://localhost:8089/stocks/" + id_stock);
+                uriStock = new URI("http://localhost:8089/stocks/" + idStock);
                 HttpHeaders headersStock = new HttpHeaders();
                 headersStock.set("Authorization", token);
                 headersStock.set("Content-Type", "application/json");
 
-                // (instancia,cabecalho)
                 HttpEntity requestEntityStock = new HttpEntity(headersStock);
 
-                // HttpMethod.PUT , HttpMethod.POST , HttpMethod.GET
                 ResponseEntity<StockCompleteDto> responseStock = restTemplateStock.exchange(
                         uriStock,
                         HttpMethod.GET,
                         requestEntityStock,
                         StockCompleteDto.class);
-                String stock_name = responseStock.getBody().getStock_name();
-                String stock_symbol = responseStock.getBody().getStock_symbol();
+                String stockName = responseStock.getBody().getstockName();
+                String stockSymbol = responseStock.getBody().getstockSymbol();
+
                 int status = 1;
                 int volume = random.nextInt(1, 11);
-                long id_user = userRepository.randomBot();
-                // int type = random.nextInt(0, 2);
-                int type = 1;
+                long idUser = userRepository.randomBot();
+                int type = random.nextInt(0, 2);
                 LocalDateTime now = LocalDateTime.now();
                 Timestamp timestamp = Timestamp.valueOf(now);
                 if (type == 1) {
                     BigDecimal price = BigDecimal.valueOf(random.nextDouble(16, 20));
-                    userRepository.getById(id_user)
-                            .setDollar_balance(price.multiply(BigDecimal.valueOf(volume)).add(BigDecimal.valueOf(10)));
+                    userRepository.getById(idUser)
+                            .setdollarBalance(price.multiply(BigDecimal.valueOf(volume)).add(BigDecimal.valueOf(10)));
+                    userRepository.save(userRepository.getById(idUser));
+                    OrderCreateDto orderCreateDto = new OrderCreateDto(idUser, idStock, price, volume, status,
+                            type, stockName, stockSymbol);
+                    RestTemplate restTemplateOrder = new RestTemplate();
+                    HttpHeaders headersOrder = new HttpHeaders();
 
-                    OrderCreateDto orderCreateDto = new OrderCreateDto(id_user, id_stock, price, volume, status,
-                            type, stock_name, stock_symbol);
+                    headersOrder.set("Authorization", token);
+                    headersOrder.set("Content-Type", "application/json");
 
-                    try {
-                        System.out.println("chegando aqui");
-                        RestTemplate restTemplateOrder = new RestTemplate();
-                        URI uriOrder;
-                        uriOrder = new URI("http://localhost:8088/users_order");
-                        HttpHeaders headersOrder = new HttpHeaders();
-                        headersOrder.set("Authorization", token);
-                        headersOrder.set("Content-Type", "application/json");
+                    HttpEntity requestEntityOrder = new HttpEntity(orderCreateDto, headersOrder);
+                    URI uriOrder;
 
-                        // (instancia,cabecalho)
-                        HttpEntity requestEntityOrder = new HttpEntity(orderCreateDto, headersOrder);
+                    uriOrder = new URI("http://localhost:8088/userOrder");
+                    ResponseEntity<OrderCreateDto> responseOrder = restTemplateOrder.exchange(
+                            "http://localhost:8088/userOrder",
+                            HttpMethod.POST,
+                            requestEntityOrder,
+                            OrderCreateDto.class);
 
-                        // HttpMethod.PUT , HttpMethod.POST , HttpMethod.GET
-                        ResponseEntity<OrderCreateDto> responseOrder = restTemplateOrder.exchange(
-                                uriOrder,
-                                HttpMethod.POST,
-                                requestEntityOrder,
-                                OrderCreateDto.class);
-                        System.out.println(responseOrder.getBody());
+                } else {
 
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
+                    BigDecimal price = BigDecimal.valueOf(random.nextDouble(12, 15.5));
+                    if (userStockBalanceRepository.findByUserStock(idUser, idStock) == null) {
+                        userStockBalanceRepository.createStockBalance(idStock, idUser, timestamp, stockName,
+                                stockSymbol, timestamp, volume);
+                        userRepository.save(userRepository.getById(idUser));
+
+                    } else {
+                        userStockBalanceRepository.findByUserStock(idUser, idStock).setVolume(volume);
+                        userRepository.save(userRepository.getById(idUser));
                     }
+                    OrderCreateDto orderCreateDto = new OrderCreateDto(idUser, idStock, price,
+                            volume, status,
+                            type, stockName, stockSymbol);
 
-                }
-                else {
-                BigDecimal price = BigDecimal.valueOf(random.nextDouble(12, 15.5));
-                userRepository.getById(id_user)
-                .setDollar_balance(price.multiply(BigDecimal.valueOf(volume)));
-                OrderCreateDto orderCreateDto = new OrderCreateDto(id_user, id_stock, price,
-                volume, status,
-                type, stock_name, stock_symbol);
-                try {
-                System.out.println("chegando aqui");
-                RestTemplate restTemplateOrder = new RestTemplate();
-                URI uriOrder;
-                uriOrder = new URI("http://localhost:8088/users_order");
-                HttpHeaders headersOrder = new HttpHeaders();
-                headersOrder.set("Authorization", token);
-                headersOrder.set("Content-Type", "application/json");
+                    RestTemplate restTemplateOrder = new RestTemplate();
+                    URI uriOrder;
+                    uriOrder = new URI("http://localhost:8088/userOrder");
+                    HttpHeaders headersOrder = new HttpHeaders();
+                    headersOrder.set("Authorization", token);
+                    headersOrder.set("Content-Type", "application/json");
 
-                // (instancia,cabecalho)
-                HttpEntity requestEntityOrder = new HttpEntity(orderCreateDto, headersOrder);
+                    // (instancia,cabecalho)
+                    HttpEntity requestEntityOrder = new HttpEntity(orderCreateDto, headersOrder);
 
-                // HttpMethod.PUT , HttpMethod.POST , HttpMethod.GET
-                ResponseEntity<OrderCreateDto> responseOrder = restTemplateOrder.exchange(
-                uriOrder,
-                HttpMethod.POST,
-                requestEntityOrder,
-                OrderCreateDto.class);
-                System.out.println(responseOrder.getBody());
+                    // HttpMethod.PUT , HttpMethod.POST , HttpMethod.GET
+                    ResponseEntity<OrderCreateDto> responseOrder = restTemplateOrder.exchange(
+                            uriOrder,
+                            HttpMethod.POST,
+                            requestEntityOrder,
+                            OrderCreateDto.class);
 
-                } catch (URISyntaxException e) {
-                e.printStackTrace();
-                }
                 }
 
             } catch (URISyntaxException e) {

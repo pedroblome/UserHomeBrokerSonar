@@ -1,24 +1,24 @@
 package com.pedroblome.user.controller.dto;
 
 public class StockBalanceDto {
-    private long id_user;
-    private long id_stock;
+    private long idUser;
+    private long idStock;
     private Integer volume;
 
-    public long getId_user() {
-        return id_user;
+    public long getidUser() {
+        return idUser;
     }
 
-    public void setId_user(long id_user) {
-        this.id_user = id_user;
+    public void setidUser(long idUser) {
+        this.idUser = idUser;
     }
 
-    public long getId_stock() {
-        return id_stock;
+    public long getidStock() {
+        return idStock;
     }
 
-    public void setId_stock(long id_stock) {
-        this.id_stock = id_stock;
+    public void setidStock(long idStock) {
+        this.idStock = idStock;
     }
 
     public Integer getVolume() {
@@ -33,9 +33,9 @@ public class StockBalanceDto {
 
     }
 
-    public StockBalanceDto(long id_user, long id_stock, Integer volume) {
-        this.id_user = id_user;
-        this.id_stock = id_stock;
+    public StockBalanceDto(long idUser, long idStock, Integer volume) {
+        this.idUser = idUser;
+        this.idStock = idStock;
         this.volume = volume;
     }
 

@@ -6,7 +6,7 @@ public class BotDto {
     private String name;
     private String email;
     private String password;
-    private BigDecimal dollar_balance;
+    private BigDecimal dollarBalance;
     private boolean bot;
 
     public BotDto() {
@@ -45,19 +45,19 @@ public class BotDto {
         this.password = password;
     }
 
-    public BigDecimal getDollar_balance() {
-        return dollar_balance;
+    public BigDecimal getdollarBalance() {
+        return dollarBalance;
     }
 
-    public void setDollar_balance(BigDecimal dollar_balance) {
-        this.dollar_balance = dollar_balance;
+    public void setdollarBalance(BigDecimal dollarBalance) {
+        this.dollarBalance = dollarBalance;
     }
 
-    public BotDto(String name, String email, String password, BigDecimal dollar_balance, Boolean bot) {
+    public BotDto(String name, String email, String password, BigDecimal dollarBalance, Boolean bot) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.dollar_balance = dollar_balance;
+        this.dollarBalance = dollarBalance;
         this.bot = bot;
 
     }

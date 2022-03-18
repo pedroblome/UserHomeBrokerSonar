@@ -1,51 +1,54 @@
 package com.pedroblome.user.controller.dto;
 
 import java.math.BigDecimal;
+import java.security.Timestamp;
 
 public class OrderCreateDto {
 
-    private long id_user;
-    private long id_stock;
-    private String stock_name;
-    private String stock_symbol;
+    private long idUser;
+    private long idStock;
+    private String stockName;
+    private String stockSymbol;
     private BigDecimal price;
     private Integer volume;
     private Integer status;
     private Integer type;
+
     public OrderCreateDto(){
         
     }
 
-    public String getStock_symbol() {
-        return stock_symbol;
+
+    public String getstockSymbol() {
+        return stockSymbol;
     }
 
-    public void setStock_symbol(String stock_symbol) {
-        this.stock_symbol = stock_symbol;
+    public void setstockSymbol(String stockSymbol) {
+        this.stockSymbol = stockSymbol;
     }
 
-    public String getStock_name() {
-        return stock_name;
+    public String getstockName() {
+        return stockName;
     }
 
-    public void setStock_name(String stock_name) {
-        this.stock_name = stock_name;
+    public void setstockName(String stockName) {
+        this.stockName = stockName;
     }
 
-    public long getId_user() {
-        return id_user;
+    public long getidUser() {
+        return idUser;
     }
 
-    public void setId_user(long id_user) {
-        this.id_user = id_user;
+    public void setidUser(long idUser) {
+        this.idUser = idUser;
     }
 
-    public long getId_stock() {
-        return id_stock;
+    public long getidStock() {
+        return idStock;
     }
 
-    public void setId_stock(long id_stock) {
-        this.id_stock = id_stock;
+    public void setidStock(long idStock) {
+        this.idStock = idStock;
     }
 
     public BigDecimal getPrice() {
@@ -80,16 +83,24 @@ public class OrderCreateDto {
         this.type = type;
     }
 
-    public OrderCreateDto(long id_user, long id_stock, BigDecimal price, Integer volume, Integer status, Integer type, String stock_name, String stock_symbol) {
-        this.id_user = id_user;
-        this.id_stock = id_stock;
+    public OrderCreateDto(long idUser, long idStock, BigDecimal price, Integer volume, Integer status, Integer type, String stockName, String stockSymbol) {
+        this.idUser = idUser;
+        this.idStock = idStock;
         this.price = price;
         this.volume = volume;
         this.status = status;
         this.type = type;
-        this.stock_name = stock_name;
-        this.stock_symbol = stock_symbol;
+        this.stockName = stockName;
+        this.stockSymbol = stockSymbol;
     }
+
+    @Override
+    public String toString() {
+        return "OrderCreateDto [idStock=" + idStock + ", idUser=" + idUser + ", price=" + price + ", status="
+                + status + ", stockName=" + stockName + ", stockSymbol=" + stockSymbol + ", type=" + type
+                + ", volume=" + volume + "]";
+    }
+    
     
 
 }

@@ -8,14 +8,14 @@ import java.time.LocalDateTime;
 public class StockCompleteDto {
 
     private Long id;
-    private String stock_symbol;
-    private String stock_name;
-    private BigDecimal ask_min;
-    private BigDecimal ask_max;
-    private BigDecimal bid_min;
-    private BigDecimal bid_max;
-    private Timestamp created_on;
-    private Timestamp updated_on;
+    private String stockSymbol;
+    private String stockName;
+    private BigDecimal askMin;
+    private BigDecimal askMax;
+    private BigDecimal bidMin;
+    private BigDecimal bidMax;
+    private Timestamp createdOn;
+    private Timestamp updatedOn;
     
     public StockCompleteDto(){
 
@@ -28,81 +28,81 @@ public class StockCompleteDto {
         this.id = id;
     }
 
-    public String getStock_symbol() {
-        return stock_symbol;
+    public String getstockSymbol() {
+        return stockSymbol;
     }
 
-    public void setStock_symbol(String stock_symbol) {
-        this.stock_symbol = stock_symbol;
+    public void setstockSymbol(String stockSymbol) {
+        this.stockSymbol = stockSymbol;
     }
 
-    public String getStock_name() {
-        return stock_name;
+    public String getstockName() {
+        return stockName;
     }
 
-    public void setStock_name(String stock_name) {
-        this.stock_name = stock_name;
+    public void setstockName(String stockName) {
+        this.stockName = stockName;
     }
 
-    public BigDecimal getAsk_min() {
-        return ask_min;
+    public BigDecimal getaskMin() {
+        return askMin;
     }
 
-    public void setAsk_min(BigDecimal ask_min) {
-        this.ask_min = ask_min;
+    public void setaskMin(BigDecimal askMin) {
+        this.askMin = askMin;
     }
 
-    public BigDecimal getAsk_max() {
-        return ask_max;
+    public BigDecimal getaskMax() {
+        return askMax;
     }
 
-    public void setAsk_max(BigDecimal ask_max) {
-        this.ask_max = ask_max;
+    public void setaskMax(BigDecimal askMax) {
+        this.askMax = askMax;
     }
 
-    public BigDecimal getBid_min() {
-        return bid_min;
+    public BigDecimal getbidMin() {
+        return bidMin;
     }
 
-    public void setBid_min(BigDecimal bid_min) {
-        this.bid_min = bid_min;
+    public void setbidMin(BigDecimal bidMin) {
+        this.bidMin = bidMin;
     }
 
-    public BigDecimal getBid_max() {
-        return bid_max;
+    public BigDecimal getbidMax() {
+        return bidMax;
     }
 
-    public void setBid_max(BigDecimal bid_max) {
-        this.bid_max = bid_max;
+    public void setbidMax(BigDecimal bidMax) {
+        this.bidMax = bidMax;
     }
 
-    public Timestamp getCreated_on() {
-        return created_on;
+    public Timestamp getcreatedOn() {
+        return createdOn;
     }
 
-    public void setCreated_on(Timestamp created_on) {
-        this.created_on = created_on;
+    public void setcreatedOn(Timestamp createdOn) {
+        this.createdOn = createdOn;
     }
 
-    public Timestamp getUpdated_on() {
-        return updated_on;
+    public Timestamp getupdatedOn() {
+        return updatedOn;
     }
 
-    public void setUpdated_on(Timestamp updated_on) {
-        this.updated_on = updated_on;
+    public void setupdatedOn(Timestamp updatedOn) {
+        this.updatedOn = updatedOn;
     }
-
-    public StockCompleteDto(Long id, String stock_symbol, String stock_name, BigDecimal ask_min, BigDecimal ask_max,
-            BigDecimal bid_min, BigDecimal bid_max, Timestamp created_on, Timestamp updated_on) {
+    
+    public StockCompleteDto(Long id, String stockSymbol, String stockName, BigDecimal askMin, BigDecimal askMax,
+            BigDecimal bidMin, BigDecimal bidMax, Timestamp createdOn, Timestamp updatedOn) {
         this.id = id;
-        this.stock_symbol = stock_symbol;
-        this.stock_name = stock_name;
-        this.ask_min = ask_min;
-        this.ask_max = ask_max;
-        this.bid_min = bid_min;
-        this.bid_max = bid_max;
-        this.created_on = Timestamp.valueOf(LocalDateTime.now());
-        this.updated_on = Timestamp.valueOf(LocalDateTime.now());
+        this.stockSymbol = stockSymbol;
+        this.stockName = stockName;
+        this.askMin = askMin;
+        this.askMax = askMax;
+        this.bidMin = bidMin;
+        this.bidMax = bidMax;
+        this.createdOn = Timestamp.valueOf(LocalDateTime.now());
+        this.updatedOn = Timestamp.valueOf(LocalDateTime.now());
     }
 
 }

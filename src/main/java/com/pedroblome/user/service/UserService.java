@@ -17,15 +17,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public ResponseEntity<?> depositUser(AppendDto appendDto) {
+    public ResponseEntity<User> depositUser(AppendDto appendDto) {
 
         if (appendDto.amount.compareTo(BigDecimal.valueOf(0)) < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Amount in deposit cannot be less than 0!!");
 
         } else {
-            BigDecimal newDollar_balance = userRepository.getById(appendDto.id).getDollar_balance()
+            BigDecimal newDollarBalance = userRepository.getById(appendDto.id).getdollarBalance()
                     .add((appendDto.amount));
-            userRepository.getById(appendDto.id).setDollar_balance(newDollar_balance);
+            userRepository.getById(appendDto.id).setdollarBalance(newDollarBalance);
             User userSaveDeposit = userRepository.save(userRepository.getById(appendDto.id));
 
             return ResponseEntity.ok().body(userSaveDeposit);

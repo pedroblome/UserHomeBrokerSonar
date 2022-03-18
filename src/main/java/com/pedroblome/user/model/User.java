@@ -22,10 +22,10 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private BigDecimal dollar_balance;
+    private BigDecimal dollarBalance;
     private boolean enabled;
-    private Timestamp created_on;
-    private Timestamp updated_on;
+    private Timestamp createdOn;
+    private Timestamp updatedOn;
     private boolean bot;
 
     public Long getId() {
@@ -68,12 +68,12 @@ public class User {
         this.password = password;
     }
 
-    public BigDecimal getDollar_balance() {
-        return dollar_balance;
+    public BigDecimal getdollarBalance() {
+        return dollarBalance;
     }
 
-    public void setDollar_balance(BigDecimal dollar_balance) {
-        this.dollar_balance = dollar_balance;
+    public void setdollarBalance(BigDecimal dollarBalance) {
+        this.dollarBalance = dollarBalance;
     }
 
     public boolean isEnabled() {
@@ -84,37 +84,27 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Timestamp getCreated_on() {
-        return created_on;
+    public Timestamp getcreatedOn() {
+        return createdOn;
     }
 
-    public void setCreated_on(Timestamp created_on) {
-        this.created_on = created_on;
+    public void setcreatedOn(Timestamp createdOn) {
+        this.createdOn = createdOn;
     }
 
-    public Timestamp getUpdated_on() {
-        return updated_on;
+    public Timestamp getupdatedOn() {
+        return updatedOn;
     }
 
-    public void setUpdated_on(Timestamp updated_on) {
-        this.updated_on = updated_on;
+    public void setupdatedOn(Timestamp updatedOn) {
+        this.updatedOn = updatedOn;
     }
 
     public User() {
         this.enabled = true;
-        this.created_on = Timestamp.valueOf(LocalDateTime.now());
-        this.updated_on = Timestamp.valueOf(LocalDateTime.now());
+        this.createdOn = Timestamp.valueOf(LocalDateTime.now());
+        this.updatedOn = Timestamp.valueOf(LocalDateTime.now());
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result();
-    }
 
-    private int result() {
-        return 0;
-    }
 }

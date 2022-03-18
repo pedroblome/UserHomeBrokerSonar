@@ -2,7 +2,6 @@ package com.pedroblome.user.controller;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import com.pedroblome.user.controller.dto.AppendDto;
 import com.pedroblome.user.model.User;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -46,18 +45,18 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody User user) {
+    public ResponseEntity<User> add(@RequestBody User user) {
         User addUser = userRepository.save(user);
-        return new ResponseEntity<User>(addUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(addUser, HttpStatus.CREATED);
     }
 
     @PutMapping("/deposit")
-    public ResponseEntity<?> depositUser(@RequestBody AppendDto appendDto) {
+    public ResponseEntity<User> depositUser(@RequestBody AppendDto appendDto) {
         return userService.depositUser(appendDto);
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteUser(@PathVariable Long id) throws Exception {
+    public void deleteUser(@PathVariable Long id){
         userRepository.deleteById(id);
         new ResponseEntity<>("user Deleted", HttpStatus.OK);
 

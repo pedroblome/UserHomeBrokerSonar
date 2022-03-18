@@ -1,15 +1,15 @@
 package com.pedroblome.user.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.pedroblome.user.model.User_stock_balance;
-import com.pedroblome.user.repository.User_stock_balanceRepository;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import com.pedroblome.user.model.UserStockBalance;
+import com.pedroblome.user.repository.UserStockBalanceRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,22 +25,22 @@ import org.springframework.web.server.ResponseStatusException;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/user_stock_balance")
-public class User_stock_balanceController {
+@RequestMapping("/userStock")
+public class UserStockBalanceController {
 
     @Autowired
-    private User_stock_balanceRepository user_stock_balanceRepository;
+    private UserStockBalanceRepository userStockBalanceRepository;
 
     @GetMapping
-    public List<User_stock_balance> list() {
-        return user_stock_balanceRepository.findAll();
+    public List<UserStockBalance> list() {
+        return userStockBalanceRepository.findAll();
     }
 
-    @GetMapping("/user/{iduser}")
-    public List<?> list(@PathVariable("iduser") Long iduser) {
+    @GetMapping("/user/{idUser}")
+    public List<UserStockBalance> list(@PathVariable("idUser") Long idUser) {
 
-        if (!user_stock_balanceRepository.findStockByUser(iduser).isEmpty()) {
-            return user_stock_balanceRepository.findStockByUser(iduser);
+        if (!userStockBalanceRepository.findStockByUser(idUser).isEmpty()) {
+            return userStockBalanceRepository.findStockByUser(idUser);
         } else {
 
             throw new ResponseStatusException(
@@ -50,18 +50,15 @@ public class User_stock_balanceController {
     }
 
     @PostMapping
-    public ResponseEntity<User_stock_balance> add(
-            @RequestBody User_stock_balance stock_ballance) {
+    public ResponseEntity<UserStockBalance> add(
+            @RequestBody UserStockBalance stockBalance) {
 
-        User_stock_balance stock = user_stock_balanceRepository.save(stock_ballance);
-        return new ResponseEntity<User_stock_balance>(stock, HttpStatus.CREATED);
+        UserStockBalance stock = userStockBalanceRepository.save(stockBalance);
+        return new ResponseEntity<>(stock, HttpStatus.CREATED);
 
     }
-    
 
     public ObjectMapper configureDeserializerDate() {
-        // THIS FUNCTION CONFIGURE DESERIALIZER TO GET THE CORRECT DATE FROM RESPONSE
-        // AND RETURN DE CORRECT OBJECT
 
         ObjectMapper mapper = new ObjectMapper();
         JavaTimeModule javaTimeModule = new JavaTimeModule();
