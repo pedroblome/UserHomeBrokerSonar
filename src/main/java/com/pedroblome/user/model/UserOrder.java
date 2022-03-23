@@ -153,5 +153,25 @@ public class UserOrder {
         this.updatedOn = Timestamp.valueOf(LocalDateTime.now());
 
     }
+  
+
+    public UserOrder(Long id, long idUser, long idStock, String stockSymbol, String stockName, Integer volume,
+            Integer remaingVolume, BigDecimal price, Integer type, Integer status, Timestamp createdOn,
+            Timestamp updatedOn) {
+        this.id = id;
+        this.idUser = idUser;
+        this.idStock = idStock;
+        this.stockSymbol = stockSymbol;
+        this.stockName = stockName;
+        this.volume = volume;
+        this.remaingVolume = remaingVolume;
+        this.price = price;
+        this.type = type;
+        this.status = status;
+        this.createdOn = createdOn;
+        this.updatedOn = updatedOn;
+    }
+
+    
 
 }

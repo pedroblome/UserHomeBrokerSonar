@@ -7,8 +7,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-import javax.validation.Valid;
-
 import com.pedroblome.user.controller.dto.BotDto;
 import com.pedroblome.user.controller.dto.OrderCreateDto;
 import com.pedroblome.user.controller.dto.StockCompleteDto;
@@ -36,8 +34,10 @@ public class BotServices {
     @Autowired
     UserRepository userRepository;
 
+    Random random = new Random();
+
     public void createOrdersBot(String token) {
-        Random random = new Random();
+
         while (userRepository.sevenOrMoreOrdersBot() <= 10) {
 
             try {
@@ -68,7 +68,8 @@ public class BotServices {
             }
 
         }
-
+        String stockName;
+        String stockSymbol;
         for (long idStock = 1; idStock <= 720; idStock++) {
 
             try {
@@ -87,8 +88,8 @@ public class BotServices {
                         HttpMethod.GET,
                         requestEntityStock,
                         StockCompleteDto.class);
-                String stockName = responseStock.getBody().getstockName();
-                String stockSymbol = responseStock.getBody().getstockSymbol();
+                stockName = responseStock.getBody().getstockName();
+                stockSymbol = responseStock.getBody().getstockSymbol();
 
                 int status = 1;
                 int volume = random.nextInt(1, 11);
@@ -97,12 +98,12 @@ public class BotServices {
                 LocalDateTime now = LocalDateTime.now();
                 Timestamp timestamp = Timestamp.valueOf(now);
                 if (type == 1) {
-                    BigDecimal price = BigDecimal.valueOf(random.nextDouble(16, 20));
+                    BigDecimal price = BigDecimal.valueOf(random.nextDouble(12, 18));
                     userRepository.getById(idUser)
                             .setdollarBalance(price.multiply(BigDecimal.valueOf(volume)).add(BigDecimal.valueOf(10)));
                     userRepository.save(userRepository.getById(idUser));
-                    OrderCreateDto orderCreateDto = new OrderCreateDto(idUser, idStock, price, volume, status,
-                            type, stockName, stockSymbol);
+                    OrderCreateDto orderCreateDto = new OrderCreateDto(idUser, idStock, stockName, stockSymbol, price,
+                            volume, status, type, timestamp, timestamp);
                     RestTemplate restTemplateOrder = new RestTemplate();
                     HttpHeaders headersOrder = new HttpHeaders();
 
@@ -119,9 +120,10 @@ public class BotServices {
                             requestEntityOrder,
                             OrderCreateDto.class);
 
-                } else {
+                }
+                if (type == 0) {
 
-                    BigDecimal price = BigDecimal.valueOf(random.nextDouble(12, 15.5));
+                    BigDecimal price = BigDecimal.valueOf(random.nextDouble(20, 25));
                     if (userStockBalanceRepository.findByUserStock(idUser, idStock) == null) {
                         userStockBalanceRepository.createStockBalance(idStock, idUser, timestamp, stockName,
                                 stockSymbol, timestamp, volume);
@@ -131,9 +133,9 @@ public class BotServices {
                         userStockBalanceRepository.findByUserStock(idUser, idStock).setVolume(volume);
                         userRepository.save(userRepository.getById(idUser));
                     }
-                    OrderCreateDto orderCreateDto = new OrderCreateDto(idUser, idStock, price,
-                            volume, status,
-                            type, stockName, stockSymbol);
+
+                    OrderCreateDto orderCreateDto = new OrderCreateDto(idUser, idStock, stockName, stockSymbol, price,
+                            volume, status, type, timestamp, timestamp);
 
                     RestTemplate restTemplateOrder = new RestTemplate();
                     URI uriOrder;
@@ -142,10 +144,8 @@ public class BotServices {
                     headersOrder.set("Authorization", token);
                     headersOrder.set("Content-Type", "application/json");
 
-                    // (instancia,cabecalho)
                     HttpEntity requestEntityOrder = new HttpEntity(orderCreateDto, headersOrder);
 
-                    // HttpMethod.PUT , HttpMethod.POST , HttpMethod.GET
                     ResponseEntity<OrderCreateDto> responseOrder = restTemplateOrder.exchange(
                             uriOrder,
                             HttpMethod.POST,
@@ -154,7 +154,7 @@ public class BotServices {
 
                 }
 
-            } catch (URISyntaxException e) {
+            } catch (URISyntaxException | NullPointerException e) {
                 e.printStackTrace();
             }
         }

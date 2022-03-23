@@ -3,21 +3,26 @@ package com.pedroblome.user.controller.dto;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class OrderCreateDto {
+public class UserOrderDto {
+    long id;
+    long idUser;
+    long idStock;
+    String stockName;
+    String stockSymbol;
+    BigDecimal price;
+    int volume;
+    int remaingVolume;
+    int status;
+    int type;
+    Timestamp createdOn;
+    Timestamp updatedOn;
 
-    private long idUser;
-    private long idStock;
-    private String stockName;
-    private String stockSymbol;
-    private BigDecimal price;
-    private Integer volume;
-    private Integer status;
-    private Integer type;
-    private Timestamp createdOn;
-    private Timestamp updatedOn;
+    public long getId() {
+        return id;
+    }
 
-    public OrderCreateDto() {
-
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getIdUser() {
@@ -60,27 +65,35 @@ public class OrderCreateDto {
         this.price = price;
     }
 
-    public Integer getVolume() {
+    public int getVolume() {
         return volume;
     }
 
-    public void setVolume(Integer volume) {
+    public void setVolume(int volume) {
         this.volume = volume;
     }
 
-    public Integer getStatus() {
+    public int getRemaingVolume() {
+        return remaingVolume;
+    }
+
+    public void setRemaingVolume(int remaingVolume) {
+        this.remaingVolume = remaingVolume;
+    }
+
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Integer getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(int type) {
         this.type = type;
     }
 
@@ -100,14 +113,20 @@ public class OrderCreateDto {
         this.updatedOn = updatedOn;
     }
 
-    public OrderCreateDto(long idUser, long idStock, String stockName, String stockSymbol, BigDecimal price,
-            Integer volume, Integer status, Integer type, Timestamp createdOn, Timestamp updatedOn) {
+    public UserOrderDto() {
+
+    }
+
+    public UserOrderDto(long id, long idUser, long idStock, String stockName, String stockSymbol, BigDecimal price,
+            int volume, int remaingVolume, int status, int type, Timestamp createdOn, Timestamp updatedOn) {
+        this.id = id;
         this.idUser = idUser;
         this.idStock = idStock;
         this.stockName = stockName;
         this.stockSymbol = stockSymbol;
         this.price = price;
         this.volume = volume;
+        this.remaingVolume = remaingVolume;
         this.status = status;
         this.type = type;
         this.createdOn = createdOn;
@@ -116,9 +135,10 @@ public class OrderCreateDto {
 
     @Override
     public String toString() {
-        return "OrderCreateDto [createdOn=" + createdOn + ", idStock=" + idStock + ", idUser=" + idUser + ", price="
-                + price + ", status=" + status + ", stockName=" + stockName + ", stockSymbol=" + stockSymbol + ", type="
-                + type + ", updatedOn=" + updatedOn + ", volume=" + volume + "]";
+        return "UserOrderDto [createdOn=" + createdOn + ", id=" + id + ", idStock=" + idStock + ", idUser=" + idUser
+                + ", price=" + price + ", remaingVolume=" + remaingVolume + ", status=" + status + ", stockName="
+                + stockName + ", stockSymbol=" + stockSymbol + ", type=" + type + ", updatedOn=" + updatedOn
+                + ", volume=" + volume + "]";
     }
 
 }

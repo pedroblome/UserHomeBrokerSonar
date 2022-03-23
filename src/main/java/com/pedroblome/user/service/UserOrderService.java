@@ -38,9 +38,6 @@ public class UserOrderService {
   @Autowired
   private UserOrderRepository userOrderRepository;
 
-  @Autowired
-  private BotServices botServices;
-
   public ResponseEntity<UserOrder> addOrder(UserOrder userOrder, String token) {
 
     LocalDateTime now = LocalDateTime.now();
@@ -248,8 +245,6 @@ public class UserOrderService {
 
         if (userOrder.getPrice().compareTo(buyOrder.getPrice()) < 0
             || userOrder.getPrice().compareTo(buyOrder.getPrice()) == 0) {
-          System.out.println("-----------------");
-          System.out.println("deu match com alguma do repository");
 
           int buyerVolume = buyOrder.getremaingVolume();
           int sellerVolume = userOrder.getremaingVolume();
@@ -317,8 +312,6 @@ public class UserOrderService {
       for (UserOrder sellOrder : orderSell) {
         if (sellOrder.getPrice().compareTo(userOrder.getPrice()) < 0
             || sellOrder.getPrice().compareTo(userOrder.getPrice()) == 0) {
-          System.out.println("-----------------");
-          System.out.println("deu match com alguma do repository");
 
           int buyerVolume = userOrder.getremaingVolume();
           int sellerVolume = sellOrder.getremaingVolume();
@@ -394,17 +387,16 @@ public class UserOrderService {
     BigDecimal bidmin = null;
     BigDecimal bidmax = null;
 
-    if (userOrderRepository.orderStockBuy(userOrder.getidStock())) {
+    if (Boolean.TRUE.equals(userOrderRepository.orderStockBuy(userOrder.getidStock()))) {
       bidmin = userOrderRepository.bidMin(userOrder.getidStock());
       bidmax = userOrderRepository.bidMax(userOrder.getidStock());
 
     }
-    if (userOrderRepository.orderStockSell(userOrder.getidStock())) {
+    if (Boolean.TRUE.equals(userOrderRepository.orderStockSell(userOrder.getidStock()))) {
       askmin = userOrderRepository.askMin(userOrder.getidStock());
       askmax = userOrderRepository.askMax(userOrder.getidStock());
     }
-    System.out.println("checkaskbidcheckaskbidcheckaskbidcheckaskbidcheckaskbid");
-    System.out.println("checkaskbidcheckaskbidcheckaskbidcheckaskbidcheckaskbid");
+
     return new StockAskBidDto(userOrder.getidStock(), askmin, askmax, bidmin, bidmax,
         userOrder.getupdatedOn());
 

@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @IdClass(UserStockBalancePK.class)
 public class UserStockBalance {
 
-    @Id 
+    @Id
     private Long idUser;
     @Id
     private Long idStock;
@@ -22,7 +22,6 @@ public class UserStockBalance {
     private Integer volume;
     private Timestamp createdOn;
     private Timestamp updatedOn;
-    
 
     public Long getidUser() {
         return idUser;
@@ -93,24 +92,8 @@ public class UserStockBalance {
         this.volume = volume;
     }
 
-
     public UserStockBalance(Integer volume) {
-        this.volume=volume;
-    }
-    
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((idStock == null) ? 0 : idStock.hashCode());
-        result = prime * result + ((idUser == null) ? 0 : idUser.hashCode());
-
-        return result();
-    }
-
-    private int result() {
-        return 0;
+        this.volume = volume;
     }
 
 }
