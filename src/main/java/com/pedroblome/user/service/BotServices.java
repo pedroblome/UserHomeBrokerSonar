@@ -34,9 +34,10 @@ public class BotServices {
     @Autowired
     UserRepository userRepository;
 
-    Random random = new Random();
 
     public void createOrdersBot(String token) {
+        Random random = new Random();
+
 
         while (userRepository.sevenOrMoreOrdersBot() <= 10) {
 
