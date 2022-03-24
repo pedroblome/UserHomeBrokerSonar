@@ -18,27 +18,27 @@ public class UserOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "id")
-    
+
     private Long id;
-    @Column(name="idUser")
+    @Column(name = "idUser")
     private long idUser;
-    @Column(name="idStock")
+    @Column(name = "idStock")
     private long idStock;
-    @Column(name="stockSymbol")
+    @Column(name = "stockSymbol")
     private String stockSymbol;
-    @Column(name="stockName")
+    @Column(name = "stockName")
     private String stockName;
-    @Column(name="volume")
+    @Column(name = "volume")
     private Integer volume;
-    @Column(name="remaingVolume")
+    @Column(name = "remaingVolume")
     private Integer remaingVolume;
-    @Column(name="price")
+    @Column(name = "price")
     private BigDecimal price;
     private Integer type;
     private Integer status;
-    @Column(name="createdOn")
+    @Column(name = "createdOn")
     private Timestamp createdOn;
-    @Column(name="updatedOn")
+    @Column(name = "updatedOn")
     private Timestamp updatedOn;
 
     public Long getId() {
@@ -128,7 +128,6 @@ public class UserOrder {
     public void setupdatedOn(Timestamp updatedOn) {
         this.updatedOn = updatedOn;
     }
-    
 
     public Integer getVolume() {
         return volume;
@@ -138,22 +137,21 @@ public class UserOrder {
         this.volume = volume;
     }
 
-    public void subractRemaingVolume(){
-        this.remaingVolume  -= remaingVolume;
+    public void subractRemaingVolume() {
+        this.remaingVolume -= remaingVolume;
     }
-    public void addRemaingVolume(){
+
+    public void addRemaingVolume() {
         this.remaingVolume += remaingVolume;
     }
 
-    public void closeOrder(){
-        this.status=0;
+    public void closeOrder() {
+        this.status = 0;
     }
+
     public UserOrder() {
-        this.createdOn = Timestamp.valueOf(LocalDateTime.now());
-        this.updatedOn = Timestamp.valueOf(LocalDateTime.now());
 
     }
-  
 
     public UserOrder(Long id, long idUser, long idStock, String stockSymbol, String stockName, Integer volume,
             Integer remaingVolume, BigDecimal price, Integer type, Integer status, Timestamp createdOn,
@@ -168,10 +166,8 @@ public class UserOrder {
         this.price = price;
         this.type = type;
         this.status = status;
-        this.createdOn = createdOn;
-        this.updatedOn = updatedOn;
+        this.createdOn = Timestamp.valueOf(LocalDateTime.now());
+        this.updatedOn = Timestamp.valueOf(LocalDateTime.now());
     }
-
-    
 
 }

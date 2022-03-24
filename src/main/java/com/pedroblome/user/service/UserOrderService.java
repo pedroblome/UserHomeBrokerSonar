@@ -73,8 +73,7 @@ public class UserOrderService {
               if (userOrder.getType() == 1) {
                 userRepository.getById(userOrder.getidUser()).setdollarBalance(newBalance);
               }
-              UserOrder orderSave = userOrderRepository.save(userOrder);
-              matchOrder(userOrder, token);
+              matchOrder(userOrder);
 
               try {
 
@@ -96,7 +95,7 @@ public class UserOrderService {
               } catch (URISyntaxException e) {
                 e.printStackTrace();
               }
-              return ResponseEntity.ok().body(orderSave);
+              return ResponseEntity.ok().body(userOrder);
 
             }
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -236,7 +235,7 @@ public class UserOrderService {
 
   }
 
-  public ResponseEntity<UserOrder> matchOrder(@RequestBody UserOrder userOrder, String token) {
+  public ResponseEntity<UserOrder> matchOrder(@RequestBody UserOrder userOrder) {
     List<UserOrder> orderSell = userOrderRepository.listSell(userOrder.getidStock(), userOrder.getidUser());
     List<UserOrder> orderBuy = userOrderRepository.listBuy(userOrder.getidStock(), userOrder.getidUser());
 
@@ -271,8 +270,10 @@ public class UserOrderService {
           userRepository.getById(userOrder.getidUser()).setupdatedOn(timestamp);
           userRepository.getById(buyOrder.getidUser()).setupdatedOn(timestamp);
 
-          userOrderRepository.getById(userOrder.getId()).setupdatedOn(timestamp);
-          userOrderRepository.getById(buyOrder.getId()).setupdatedOn(timestamp);
+          System.out.println("entrando no erro");
+          userOrder.setupdatedOn(timestamp);
+          buyOrder.setupdatedOn(timestamp);
+          System.out.println("saindo do felipe");
 
           userRepository.getById(userOrder.getidUser())
               .setdollarBalance(dollarBalanceSeller.add(dollarOrderTotal));
@@ -338,8 +339,10 @@ public class UserOrderService {
           userRepository.getById(userOrder.getidUser()).setupdatedOn(timestamp);
           userRepository.getById(sellOrder.getidUser()).setupdatedOn(timestamp);
 
-          userOrderRepository.getById(userOrder.getId()).setupdatedOn(timestamp);
-          userOrderRepository.getById(sellOrder.getId()).setupdatedOn(timestamp);
+          System.out.println("entrando no erro");
+          userOrder.setupdatedOn(timestamp);
+          sellOrder.setupdatedOn(timestamp);
+          System.out.println("saindo do felipe");
 
           userRepository.getById(sellOrder.getidUser())
               .setdollarBalance(dollarBalanceSeller.add(dollarOrderTotal));

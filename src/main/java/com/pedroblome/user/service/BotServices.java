@@ -18,9 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class BotServices {
@@ -34,10 +36,9 @@ public class BotServices {
     @Autowired
     UserRepository userRepository;
 
+    Random random = new Random();
 
     public void createOrdersBot(String token) {
-        Random random = new Random();
-
 
         while (userRepository.sevenOrMoreOrdersBot() <= 10) {
 
@@ -89,6 +90,7 @@ public class BotServices {
                         HttpMethod.GET,
                         requestEntityStock,
                         StockCompleteDto.class);
+
                 stockName = responseStock.getBody().getstockName();
                 stockSymbol = responseStock.getBody().getstockSymbol();
 
@@ -101,9 +103,11 @@ public class BotServices {
                 if (type == 1) {
                     BigDecimal price = BigDecimal.valueOf(random.nextDouble(12, 18));
                     userRepository.getById(idUser)
-                            .setdollarBalance(price.multiply(BigDecimal.valueOf(volume)).add(BigDecimal.valueOf(10)));
+                            .setdollarBalance(
+                                    price.multiply(BigDecimal.valueOf(volume)).add(BigDecimal.valueOf(10)));
                     userRepository.save(userRepository.getById(idUser));
-                    OrderCreateDto orderCreateDto = new OrderCreateDto(idUser, idStock, stockName, stockSymbol, price,
+                    OrderCreateDto orderCreateDto = new OrderCreateDto(idUser, idStock, stockName, stockSymbol,
+                            price,
                             volume, status, type, timestamp, timestamp);
                     RestTemplate restTemplateOrder = new RestTemplate();
                     HttpHeaders headersOrder = new HttpHeaders();
@@ -135,7 +139,8 @@ public class BotServices {
                         userRepository.save(userRepository.getById(idUser));
                     }
 
-                    OrderCreateDto orderCreateDto = new OrderCreateDto(idUser, idStock, stockName, stockSymbol, price,
+                    OrderCreateDto orderCreateDto = new OrderCreateDto(idUser, idStock, stockName, stockSymbol,
+                            price,
                             volume, status, type, timestamp, timestamp);
 
                     RestTemplate restTemplateOrder = new RestTemplate();

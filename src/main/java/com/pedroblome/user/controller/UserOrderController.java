@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins ={"http://localhost:8081/"})
+@CrossOrigin(origins ="http://localhost:8081")
 @RestController
 @RequestMapping("/userOrder")
 public class UserOrderController {
@@ -51,7 +51,7 @@ public class UserOrderController {
 
     @GetMapping("/byUser/{idUser}")
     public List<UserOrder> listOrderById(@PathVariable Long idUser) {
-        return userOrderRepository.findOrdersByIdUser(idUser);
+        return userOrderRepository.findOrdersByIdUser(idUser);  
     }
 
     @PutMapping("closeOrder/{orderId}")
@@ -74,6 +74,10 @@ public class UserOrderController {
                 userOrder.getRemaingVolume(),
                 userOrder.getPrice(), userOrder.getType(), userOrder.getStatus(), userOrder.getCreatedOn(),
                 userOrder.getUpdatedOn());
+
+        System.out.println(userOrder2);
+        System.out.println("------------------");
+        System.out.println(userOrder);
 
         return userOrderService.addOrder(userOrder2, token);
     }
